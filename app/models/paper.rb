@@ -53,6 +53,7 @@ class Paper
         paper = Hpricot(IO.read(xml_file))
       
         self.extract_tables(paper)
+        self.extract_figs(paper)
       end
       self.parsed=true
       self.save
@@ -83,6 +84,22 @@ class Paper
   end
   
   def extract_figs(data)
+    figures = data.search("//figure")
+
+    figures.each do |figure|
+      puts
+      puts "figure #{figure.to_s}"
+      puts
+      number = figure.attributes["id-text"]
+      file   = figure.attributes["file"]
+      caption = figure.search("head").inner_html
+      ext = figure.attributes["extension"]
+      unless file.empty? or ext.empty?
+        self.assets<< Asset.new(:kind=>"figure", :caption=>"caption.html_safe", 
+                              :file=>File.open("#{self.local_url}/#{file}.#{ext}","r"),
+                              :number=>number.html_safe)
+      end
+    end
     
   end
   

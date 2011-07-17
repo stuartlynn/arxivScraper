@@ -12,6 +12,10 @@
 		table tr:nth-child(2n){
 			background-color:#F5F5F5;
 		}
+		
+		.figure{
+			
+		}
 	</style>
 <%end%>
 
@@ -49,4 +53,15 @@
 	</div>
 	
 	<%end%>
+	
+	<p>Paper had <%=@paper.assets.where(:kind=>"figure").count%> figures </p>
+	
+	<div id="figures">
+		<%@paper.assets.where(:kind=>"figure").each do |figure|%>
+			<div class="figure">
+				<%=image_tag 'file.png' %>
+				<p><%=figure.caption%></p>
+			</div>
+		<%end%>
+	</div>
 </div>
