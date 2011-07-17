@@ -1,0 +1,52 @@
+<%=content_for :head do %>
+	<style type="text/css">
+		#table_container {
+			width:300px;
+			float:left;
+			margin-left:20px;
+			padding:10px;
+			min-height:500px;
+			border:solid 1px black;
+		}
+		
+		table tr:nth-child(2n){
+			background-color:#F5F5F5;
+		}
+	</style>
+<%end%>
+
+<h1><%=@paper.title%> </h1>
+<h2>(<%=@paper.arxiv_no%>)</h2>
+<p><%=@paper.abstract%></p>
+
+<p>Paper has <%=@paper.assets.where(:kind=>"table").count%> tables</p>
+<%@paper.assets.where(:kind=>"table").all.each do |table|%>
+<div id="tables">
+	<div id="table_container">
+	<table> 
+		<tr>
+			<%table.data.first.each do |header|%>
+				<th><%=header%></th>
+			<%end%>
+		</tr>
+	
+		<%table.data[1..-1].each do |row|%>
+			<tr>
+			<%row.each do |cell|%>
+				<td><%=cell%></td>
+			<%end%>
+			</tr>
+		<%end%>
+		
+	</table>
+	<div class='details'>
+		<h2>Caption</h2>
+		<p><%=table.caption%></p>
+		<p>Download as <%=link_to 'json', "/assets/#{table.id}.json"%> 
+									 <%=link_to 'xml',  "/assets/#{table.id}.xml"%>
+									 <%=link_to 'csv',  "/assets/#{table.id}.csv"%></p>
+	</div>
+	</div>
+	
+	<%end%>
+</div>

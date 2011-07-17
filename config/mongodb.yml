@@ -1,0 +1,12 @@
+development: &global_settings
+  host: localhost
+  database: axrivScraper
+
+test:
+  database: amblr-test
+  <<: *global_settings
+
+production:
+
+  
+  <<: *global_settings
